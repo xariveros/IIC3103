@@ -18,55 +18,61 @@ class App extends Component {
       paginas_chars: 0,
       paginas_locations: 0,
       info_locations: [],
-      busqueda: ""
+      busqueda: "",
     };
   }
 
   componentDidMount() {
-    fetch("https://rickandmortyapi.com/api/episode")
-      .then(res => res.json())
-      .then(data => {
+    fetch("https://integracion-rick-morty-api.herokuapp.com/api/episode")
+      .then((res) => res.json())
+      .then((data) => {
         this.setState({ info: data.results, link: data.info.next });
 
         fetch(data.info.next)
-          .then(res => res.json())
-          .then(data1 => {
+          .then((res) => res.json())
+          .then((data1) => {
             this.setState({ info2: data1.results });
           });
       });
 
-    fetch("https://rickandmortyapi.com/api/character")
-      .then(res => res.json())
-      .then(data => {
+    fetch("https://integracion-rick-morty-api.herokuapp.com/api/character")
+      .then((res) => res.json())
+      .then((data) => {
         this.setState({ paginas_chars: data.info.pages });
         console.log(this.state.paginas_chars);
 
         for (let index = 1; index < this.state.paginas_chars + 1; index++) {
           var n = index.toString();
-          fetch("https://rickandmortyapi.com/api/character/?page=" + n)
-            .then(res => res.json())
-            .then(data1 => {
+          fetch(
+            "https://integracion-rick-morty-api.herokuapp.com/api/character/?page=" +
+              n
+          )
+            .then((res) => res.json())
+            .then((data1) => {
               //console.log(data1)
               this.setState({
-                info_chars: this.state.info_chars.concat(data1.results)
+                info_chars: this.state.info_chars.concat(data1.results),
               });
               // console.log(this.state.info_chars)
             });
         }
       });
 
-    fetch("https://rickandmortyapi.com/api/location")
-      .then(res => res.json())
-      .then(data => {
+    fetch("https://integracion-rick-morty-api.herokuapp.com/api/location")
+      .then((res) => res.json())
+      .then((data) => {
         this.setState({ paginas_locations: data.info.pages });
 
         for (let index = 1; index < this.state.paginas_locations + 1; index++) {
           var n = index.toString();
-          fetch("https://rickandmortyapi.com/api/location/?page=" + n)
-            .then(res => res.json())
-            .then(data1 => {
+          fetch(
+            "https://integracion-rick-morty-api.herokuapp.com/api/location/?page=" +
+              n
+          )
+            .then((res) => res.json())
+            .then((data1) => {
               this.setState({
-                info_locations: this.state.info_locations.concat(data1.results)
+                info_locations: this.state.info_locations.concat(data1.results),
               });
               //console.log(this.state.info_locations)
             });
@@ -74,7 +80,7 @@ class App extends Component {
       });
   }
 
-  handleSubmit = event => {
+  handleSubmit = (event) => {
     //event.preventDefault()
     //console.log("apreto enter")
     this.setState({ busqueda: event.target.value });
@@ -82,13 +88,13 @@ class App extends Component {
     //console.log(buscar)
   };
 
-  handleChange = event => {
+  handleChange = (event) => {
     //event.preventDefault()
     this.setState({ busqueda: event.target.value });
     console.log(this.state.busqueda);
   };
 
-  handleClick = event => {
+  handleClick = (event) => {
     //this.setState({busqueda:event.target.value})
     this.forceUpdate();
   };
@@ -102,7 +108,7 @@ class App extends Component {
           </Link>
         </center>
 
-        {this.state.info.map(info => (
+        {this.state.info.map((info) => (
           <div>
             <Route exact path={"/" + info.id}>
               <center>
@@ -126,7 +132,7 @@ class App extends Component {
           </div>
         ))}
 
-        {this.state.info2.map(info => (
+        {this.state.info2.map((info) => (
           <div>
             <Route exact path={"/" + info.id}>
               <InfoEpisodio name={info.name} />
@@ -136,7 +142,7 @@ class App extends Component {
 
         {/* personajes */}
 
-        {this.state.info_chars.map(info => (
+        {this.state.info_chars.map((info) => (
           <div>
             <Route exact path={"/characters/" + info.id}>
               <center>
@@ -172,7 +178,7 @@ class App extends Component {
           </div>
         ))}
 
-        {this.state.info_locations.map(info => (
+        {this.state.info_locations.map((info) => (
           <div>
             <Route exact path={"/location/" + info.id}>
               <center>
@@ -197,7 +203,7 @@ class App extends Component {
                 <h2>Dimensión: {info.dimension}</h2>
 
                 <h1>Personajes que aparecen:</h1>
-                {info.residents.map(info => (
+                {info.residents.map((info) => (
                   <div>
                     <InfoChar2 url={info} />
                   </div>

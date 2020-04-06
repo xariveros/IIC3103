@@ -8,13 +8,16 @@ class InfoEpisodio extends Component {
   }
 
   componentDidMount() {
-    fetch("https://rickandmortyapi.com/api/episode?name=" + this.props.name)
-      .then(res => res.json())
-      .then(data => {
+    fetch(
+      "https://integracion-rick-morty-api.herokuapp.com/api/episode?name=" +
+        this.props.name
+    )
+      .then((res) => res.json())
+      .then((data) => {
         this.setState({
           info: data.results,
           lista_chars: data.results.characters,
-          url_actual: ""
+          url_actual: "",
         });
 
         console.log(this.state.info[0].characters[0]);
@@ -25,11 +28,11 @@ class InfoEpisodio extends Component {
           index++
         ) {
           fetch(this.state.info[0].characters[index])
-            .then(res => res.json())
-            .then(data1 => {
+            .then((res) => res.json())
+            .then((data1) => {
               this.setState({
                 test: this.state.test.concat(data1.name),
-                char_id: this.state.char_id.concat([[data1.name, data1.id]])
+                char_id: this.state.char_id.concat([[data1.name, data1.id]]),
               });
             });
         }
@@ -39,7 +42,7 @@ class InfoEpisodio extends Component {
   render() {
     return (
       <div>
-        {this.state.info.map(info => (
+        {this.state.info.map((info) => (
           <div>
             <center>
               <li>ID: {info.id}</li>
@@ -49,7 +52,7 @@ class InfoEpisodio extends Component {
               <h1>
                 <p>Personajes</p>
               </h1>
-              {this.state.char_id.map(info1 => (
+              {this.state.char_id.map((info1) => (
                 <div>
                   <Link to={"/characters/" + info1[1]}>
                     <li>{info1[0]}</li>
